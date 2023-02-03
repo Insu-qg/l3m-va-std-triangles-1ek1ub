@@ -7,14 +7,26 @@ import { Assertion, LogTests } from './utils';
 /***********************************************************************************************************************
  * A FAIRE : Complétez avec votre mail UGA
  */
-const mailIdentification = 'prénom.nom@univ-grenoble-alpes.fr';
+const mailIdentification = 'quentin.grange@etu.univ-grenoble-alpes.fr';
 
 /***********************************************************************************************************************
  * A FAIRE : Fonction qui renvoie le type d'un triangle
  * "INVALIDE" | "SCALÈNE" | "ISOCÈLE" | "ÉQUILATÉRAL"
  */
 function f(a: number, b: number, c: number): TriangleType {
-  return 'SCALÈNE';
+  let res: TriangleType;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    res = 'INVALIDE';
+  } else if (a + b <= c || a + c <= b || b + c <= a) {
+    res = 'INVALIDE';
+  } else if (a === b && b === c) {
+    res = 'ÉQUILATÉRAL';
+  } else if (a === b || b === c || a === c) {
+    res = 'ISOCÈLE';
+  } else {
+    res = 'SCALÈNE';
+  }
+  return res;
 }
 
 /***********************************************************************************************************************
@@ -25,36 +37,43 @@ function f(a: number, b: number, c: number): TriangleType {
  *   - comment : un commentaire sous forme de chaine de caractère
  */
 const tests: Assertion<Parameters<FCT_TRIANGLE>, ReturnType<FCT_TRIANGLE>>[] = [
-  { args: [1, 1, 1], expectedResult: 'ÉQUILATÉRAL', comment: 'Un triangle dont les côtés sont de longueur 1 devrait être classé comme équilatéral' },
-  { args: [2, 3, 4], expectedResult: 'SCALÈNE', comment: 'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène' },
+  {
+    args: [1, 1, 1],
+    expectedResult: 'ÉQUILATÉRAL',
+    comment:
+      'Un triangle dont les côtés sont de même longueur devrait être classé comme équilatéral',
+  },
+  {
+    args: [2, 3, 4],
+    expectedResult: 'SCALÈNE',
+    comment:
+      'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène',
+  },
+  {
+    args: [0, 0, 0],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont = 0 n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [-1, -1, -1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [5, 5, 8],
+    expectedResult: 'ISOCÈLE',
+    comment:
+      'un triangle dont exactement 2 cotés sont de même valeurs est un triangle isocele',
+  },
+  {
+    args: [1, 10, 1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un tiangle dont la somme des 2 cotés les plus petits est <= au dernier coté n est pas un triangle. ',
+  },
 ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /***********************************************************************************************************************
  * NE PAS TOUCHER !!!
@@ -83,21 +102,21 @@ bt.onclick = async () => {
   form.append('f', bodyStr);
   form.append('tests', JSON.stringify(tests));
 
-console.log("POST...")
+  console.log('POST...');
   const R = await fetch(url, {
     method: 'POST',
     body: form,
   });
-  console.log("...received response ...")
+  console.log('...received response ...');
   const res = await R.json();
-  console.log("... response decoded.")
+  console.log('... response decoded.');
   let t = 0;
   if (res.error) {
     section.innerHTML = `<pre>${res.error}</pre>`;
-    const [,strT] = /([0-9]*) secondes$/.exec(res.error);
-    t = + strT;
+    const [, strT] = /([0-9]*) secondes$/.exec(res.error);
+    t = +strT;
     console.log(strT, t);
-    const inter = setInterval( () => {
+    const inter = setInterval(() => {
       t--;
       if (t <= 0) {
         bt.disabled = false;
@@ -107,23 +126,29 @@ console.log("POST...")
         section.innerHTML = `<pre>Vous ne pouvez pas resoumettre avant ${t} secondes
   </pre>`;
       }
-    }, 1000 );
+    }, 1000);
   } else {
-    console.log("no errors...")
+    console.log('no errors...');
     section.innerHTML = `
       Tests de référence passés par votre code (vert = le test passe):<br/>
       <table class="result"><tbody><tr>
-      ${res.testPassed.map((t, i) => `<td class="${t?'':'in'}correct">${i}</td>`).join('')}
+      ${res.testPassed
+        .map((t, i) => `<td class="${t ? '' : 'in'}correct">${i}</td>`)
+        .join('')}
       </tr></tbody></table>
       <br/><br/>
       Vos tests passés sur le code de référence :<br/>
       <table class="result"><tbody><tr>
-      ${res.testsVsCoderef.map((t, i) => `<td class="${t?'':'in'}correct">${i}</td>`).join('')}
+      ${res.testsVsCoderef
+        .map((t, i) => `<td class="${t ? '' : 'in'}correct">${i}</td>`)
+        .join('')}
       </tr></tbody></table>
       <br/><br/>
       Mutants éliminés par votre code (vert = le mutant est éliminé) :<br/>
       <table class="result"><tbody><tr>
-      ${res.discardedMutants.map((t, i) => `<td class="${t?'':'in'}correct">${i}</td>`).join('')}
+      ${res.discardedMutants
+        .map((t, i) => `<td class="${t ? '' : 'in'}correct">${i}</td>`)
+        .join('')}
       </tr></tbody></table>
     `;
   }
