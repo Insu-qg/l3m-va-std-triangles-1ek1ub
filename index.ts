@@ -49,6 +49,7 @@ const tests: Assertion<Parameters<FCT_TRIANGLE>, ReturnType<FCT_TRIANGLE>>[] = [
     comment:
       'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène',
   },
+
   {
     args: [0, 0, 0],
     expectedResult: 'INVALIDE',
@@ -60,6 +61,18 @@ const tests: Assertion<Parameters<FCT_TRIANGLE>, ReturnType<FCT_TRIANGLE>>[] = [
     expectedResult: 'INVALIDE',
     comment:
       'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [5, 8, 5],
+    expectedResult: 'ISOCÈLE',
+    comment:
+      'un triangle dont exactement 2 cotés sont de même valeurs est un triangle isocele',
+  },
+  {
+    args: [8, 5, 5],
+    expectedResult: 'ISOCÈLE',
+    comment:
+      'un triangle dont exactement 2 cotés sont de même valeurs est un triangle isocele',
   },
   {
     args: [5, 5, 8],
