@@ -44,20 +44,67 @@ const tests: Assertion<Parameters<FCT_TRIANGLE>, ReturnType<FCT_TRIANGLE>>[] = [
       'Un triangle dont les côtés sont de même longueur devrait être classé comme équilatéral',
   },
   {
+    args: [3, 4, 2],
+    expectedResult: 'SCALÈNE',
+    comment:
+      'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène',
+  },
+  {
+    args: [4, 2, 3],
+    expectedResult: 'SCALÈNE',
+    comment:
+      'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène',
+  },
+  {
     args: [2, 3, 4],
     expectedResult: 'SCALÈNE',
     comment:
       'Un triangle dont les côtés sont de longueur 2, 3 et 4 devrait être classé comme scalène',
   },
-
   {
     args: [0, 0, 0],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [0, 3, 3],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont = 0 n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [3, 0, 3],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont = 0 n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [3, 3, 0],
     expectedResult: 'INVALIDE',
     comment:
       'un triangle dont les cotés sont = 0 n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
   },
   {
     args: [-1, -1, -1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [-1, 1, 1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [1, -1, 1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
+  },
+  {
+    args: [1, 1, -1],
     expectedResult: 'INVALIDE',
     comment:
       'un triangle dont les cotés sont négatifs n existe pas on renvoie donc invalide et non pas ÉQUILATÉRAL',
@@ -85,6 +132,36 @@ const tests: Assertion<Parameters<FCT_TRIANGLE>, ReturnType<FCT_TRIANGLE>>[] = [
     expectedResult: 'INVALIDE',
     comment:
       'un tiangle dont la somme des 2 cotés les plus petits est <= au dernier coté n est pas un triangle. ',
+  },
+  {
+    args: [1, 1, 10],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un tiangle dont la somme des 2 cotés les plus petits est <= au dernier coté n est pas un triangle. ',
+  },
+  {
+    args: [10, 1, 1],
+    expectedResult: 'INVALIDE',
+    comment:
+      'un tiangle dont la somme des 2 cotés les plus petits est <= au dernier coté n est pas un triangle. ',
+  },
+  {
+    args: [10, 5, 5],
+    expectedResult: 'INVALIDE',
+    comment:
+      'Un triangle dont 1 coté = les 2 côtés restant est invalide',
+  },
+  {
+    args: [5, 10, 5],
+    expectedResult: 'INVALIDE',
+    comment:
+      'Un triangle dont 1 coté = les 2 côtés restant est invalide',
+  },
+  {
+    args: [5, 5, 10],
+    expectedResult: 'INVALIDE',
+    comment:
+      'Un triangle dont 1 coté = les 2 côtés restant est invalide',
   },
 ];
 
